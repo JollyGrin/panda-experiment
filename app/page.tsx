@@ -1,63 +1,65 @@
-"use client";
-
+import React, { Suspense } from "react";
+import { ParsedUrlQuery } from "querystring";
+import { ModalButton } from "./ModalButton";
 import { css } from "@/styled-system/css";
-import { Box } from "@/styled-system/jsx";
-import { Button, button } from "@/components/styled";
-import { useState } from "react";
-import { modal, ModalContent } from "@/components/styled/modal";
+import { Wrap } from "@/styled-system/jsx";
+import { TestModal } from "./TestModal";
 
-export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
+interface HomeProps {
+  searchParams: ParsedUrlQuery;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+}
+
+// const fetchPosts = async (): Promise<Post[]> => {
+//   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+//   return res.json();
+// };
+
+const fetchPosts = async (): Promise<Post[]> => {
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        cache: "no-cache",
+      });
+      const data = await res.json();
+      resolve(data);
+    }, 5000); // Simulate a 2-second delay
+  });
+};
+
+const Posts = React.lazy(async () => {
+  const data = await fetchPosts();
+  return {
+    default: () => (
+      <>
+        {data.map((record) => (
+          <div key={record.id} className={css({ bg: "blue.500" })}>
+            {record.id}
+          </div>
+        ))}
+      </>
+    ),
+  };
+});
+
+export default function Home({ searchParams }: HomeProps) {
+  const isOpen = searchParams.modal === "true";
 
   return (
-    <main style={{ position: "relative" }}>
-      {isOpen && (
-        <div
-          className={modal()}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setIsOpen(false);
-            }
-          }}
-        >
-          <ModalContent>
-            <Box bg="red" w="400px" h="600px">
-              <p>dhjska</p>
-            </Box>
-          </ModalContent>
-        </div>
-      )}
-      <div>
-        <div
-          className={css({
-            display: "flex",
-            flexDirection: "column",
-            bg: "red",
-            w: "10rem",
-            h: "10rem",
-          })}
-        >
-          <p>hi</p>
-
-          <p>hi</p>
-        </div>
-        <Box>Hello</Box>
-        <Button visual="outline" size="lg" onClick={() => setIsOpen(true)}>
-          JSX
-        </Button>
-
-        <Button
-          disabled={true}
-          visual="disabled"
-          size="lg"
-          onClick={() => setIsOpen(true)}
-        >
-          JSX
-        </Button>
-        <button className={button({ visual: "solid", size: "lg" })}>
-          function
-        </button>
-      </div>
+    <main style={{ position: "relative", padding: "3rem" }}>
+      {isOpen && <TestModal />}
+      <ModalButton />
+      <Wrap>
+        <Suspense fallback={<div>Loading posts...</div>}>
+          <Posts />
+        </Suspense>
+      </Wrap>
     </main>
   );
 }

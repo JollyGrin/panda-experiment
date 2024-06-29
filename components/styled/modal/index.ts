@@ -1,6 +1,8 @@
 import { cva } from "@/styled-system/css";
 import { styled } from "@/styled-system/jsx";
 
+export * from "./Modal";
+
 export const modal = cva({
   base: {
     display: "flex",
