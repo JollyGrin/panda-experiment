@@ -16,11 +16,6 @@ interface Post {
   userId: number;
 }
 
-// const fetchPosts = async (): Promise<Post[]> => {
-//   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-//   return res.json();
-// };
-
 const fetchPosts = async (): Promise<Post[]> => {
   return new Promise((resolve) => {
     setTimeout(async () => {
@@ -29,24 +24,22 @@ const fetchPosts = async (): Promise<Post[]> => {
       });
       const data = await res.json();
       resolve(data);
-    }, 5000); // Simulate a 2-second delay
+    }, 5000); // Simulate a delay
   });
 };
 
-const Posts = React.lazy(async () => {
+const Posts = async () => {
   const data = await fetchPosts();
-  return {
-    default: () => (
-      <>
-        {data.map((record) => (
-          <div key={record.id} className={css({ bg: "blue.500" })}>
-            {record.id}
-          </div>
-        ))}
-      </>
-    ),
-  };
-});
+  return (
+    <>
+      {data.map((record) => (
+        <div key={record.id} className={css({ bg: "blue.500" })}>
+          {record.id}
+        </div>
+      ))}
+    </>
+  );
+};
 
 export default function Home({ searchParams }: HomeProps) {
   const isOpen = searchParams.modal === "true";

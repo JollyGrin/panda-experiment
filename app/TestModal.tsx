@@ -12,7 +12,7 @@ export const TestModal = () => {
   return (
     <Modal onClose={onClose}>
       <div className={css({ p: "2rem" })}>
-        <p>This is a modal</p>
+        <p>This is a modal with use client</p>
       </div>
     </Modal>
   );

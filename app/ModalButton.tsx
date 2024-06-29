@@ -9,5 +9,5 @@ export const ModalButton = () => {
     router.push("?modal=true");
   }
 
-  return <Button onClick={openModal}>Hello</Button>;
+  return <Button onClick={openModal}>Open use client modal</Button>;
 };
