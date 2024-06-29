@@ -10,6 +10,9 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
+  // syntax: "template-literal",
+  jsxFramework: "react",
+
   // Useful for theme customization
   theme: {
     extend: {},
