@@ -1,10 +1,32 @@
+"use client";
+
 import { css } from "@/styled-system/css";
-import { styled, Box, LinkOverlay } from "@/styled-system/jsx";
+import { Box } from "@/styled-system/jsx";
 import { Button, button } from "@/components/styled";
+import { useState } from "react";
+import { modal, ModalContent } from "@/components/styled/modal";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <main>
+    <main style={{ position: "relative" }}>
+      {isOpen && (
+        <div
+          className={modal()}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <ModalContent>
+            <Box bg="red" w="400px" h="600px">
+              <p>dhjska</p>
+            </Box>
+          </ModalContent>
+        </div>
+      )}
       <div>
         <div
           className={css({
@@ -20,11 +42,16 @@ export default function Home() {
           <p>hi</p>
         </div>
         <Box>Hello</Box>
-        <Button visual="outline" size="lg">
+        <Button visual="outline" size="lg" onClick={() => setIsOpen(true)}>
           JSX
         </Button>
 
-        <Button visual="disabled" size="lg">
+        <Button
+          disabled={true}
+          visual="disabled"
+          size="lg"
+          onClick={() => setIsOpen(true)}
+        >
           JSX
         </Button>
         <button className={button({ visual: "solid", size: "lg" })}>
