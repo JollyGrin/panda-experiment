@@ -1,5 +1,6 @@
 import { css } from "@/styled-system/css";
-import { styled } from "@/styled-system/jsx";
+import { styled, Box, LinkOverlay } from "@/styled-system/jsx";
+import { Button, button } from "@/components/styled";
 
 export default function Home() {
   return (
@@ -18,7 +19,17 @@ export default function Home() {
 
           <p>hi</p>
         </div>
-        <styled.button bg="blue">this is a button</styled.button>
+        <Box>Hello</Box>
+        <Button visual="outline" size="lg">
+          JSX
+        </Button>
+
+        <Button visual="disabled" size="lg">
+          JSX
+        </Button>
+        <button className={button({ visual: "solid", size: "lg" })}>
+          function
+        </button>
       </div>
     </main>
   );
